@@ -1,0 +1,145 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astronomy Picture of the Day</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+</head>
+<script>
+    //format and initialize of the datepicker
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+            format: 'yyyy-mm-dd'
+        });
+
+        $(function () {
+            $('#birthday').datepicker();
+        });
+    });
+    //the apikey to use with the API
+    const apiKey = "2a0dni52GTzWDjLPKgF1GafSiXAnymEpWwtQnLqB";
+
+    //function to retrieve the picture of the current day
+    function getImageOfTheDay() {
+        fetch('https://api.nasa.gov/planetary/apod?api_key=' + apiKey).then(function (response) {
+            // The API call was successful!
+            return response.json();
+        }).then(function (data) {
+            // Build HTML
+            let htmlSegment = `<h1>Photo of the day</h1>
+                            <div class="row">
+                                <img src="${data.url}" >
+                                <h2>${data.title}</h2>
+                                <span>${data.date}</span>
+                                <p><strong>${data.explanation}</strong></p>
+                            </div>`;
+
+            let main = document.querySelector('.main');
+            main.innerHTML = htmlSegment;
+            console.log(data);
+        }).catch(function (err) {
+            // There was an error
+            console.warn('Something went wrong.', err);
+
+        });
+    }
+    getImageOfTheDay();
+
+    function getBirthdayImg() {
+        var datetime = document.getElementById('birthday').value;
+        console.log(datetime)
+        //var date = validDate(datetime);
+        console.log(datetime)
+        const url = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey + '&date=' + datetime;
+        console.log(url)
+        fetch(url)
+            .then(response => response.json())
+            .then((data) => {
+                let htmlSegment = `<h1>Photo of that day</h1>
+                            <div class="row">
+                                <img src="${data.url}" >
+                                <h2>${data.title}</h2>
+                                <span>${data.date}</span>
+                                <p><strong>${data.explanation}</strong></p>
+                            </div>`;
+
+                let main = document.querySelector('.main');
+                main.innerHTML = htmlSegment;
+            }).catch(function (err) {
+                // There was an error
+                console.warn('Something went wrong.', err);
+
+            });
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+    }
+
+    function validDate(datetime) {
+        var date = datetime.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '-');
+        var validdate = date.split("-").reverse().join("-");
+        return validdate;
+    }
+
+
+
+
+</script>
+<style>
+    body {
+        background-image: url("https://cdn.wallpapersafari.com/93/62/uaP5XA.jpg");
+        text-align: center;
+    }
+
+    img {
+        width: 500px !important;
+        box-shadow: 0 0 15px #999;
+    }
+
+    .row {
+        display: flex !important;
+        justify-content: center;
+    }
+
+    h1,
+    h2,
+    p,
+    span {
+        color: antiquewhite;
+    }
+</style>
+
+<body>
+    <div id="container">
+
+        <div class="main">
+        </div>
+        <h1>Insert Your Birthday</h1>
+
+        <div class="col l6 m12 s12">
+            <div class="input-field">
+                <i class="iconos icon-calendar prefix"></i>
+                <input name="birthday" type="text" id="birthday" class="datepicker">
+
+            </div>
+        </div>
+        <button type="button" onclick="getBirthdayImg()" class="btn btn-primary">Search</button>
+
+    </div>
+
+</body>
+
+</html>
