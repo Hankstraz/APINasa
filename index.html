@@ -33,18 +33,19 @@
     });
     //the apikey to use with the API
     const apiKey = "2a0dni52GTzWDjLPKgF1GafSiXAnymEpWwtQnLqB";
-
+    
     //function to retrieve the picture of the current day
     function getImageOfTheDay() {
         fetch('https://api.nasa.gov/planetary/apod?api_key=' + apiKey).then(function (response) {
             // The API call was successful!
             return response.json();
-        }).then(function (data) {
+        }).then(function (data) { 
             // Build HTML
             let htmlSegment = `<h1>Photo of the day</h1>
+                            <br>
                             <div class="row">
-                                <img src="${data.url}" >
                                 <h2>${data.title}</h2>
+                                <img src="${data.url}" >
                                 <span>${data.date}</span>
                                 <p><strong>${data.explanation}</strong></p>
                             </div>`;
@@ -71,9 +72,10 @@
             .then(response => response.json())
             .then((data) => {
                 let htmlSegment = `<h1>Photo of that day</h1>
+                            <br>
                             <div class="row">
-                                <img src="${data.url}" >
                                 <h2>${data.title}</h2>
+                                <img src="${data.url}" >
                                 <span>${data.date}</span>
                                 <p><strong>${data.explanation}</strong></p>
                             </div>`;
@@ -88,12 +90,13 @@
         $('html, body').animate({ scrollTop: 0 }, 'fast');
     }
 
+    /*
     function validDate(datetime) {
         var date = datetime.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '-');
         var validdate = date.split("-").reverse().join("-");
         return validdate;
     }
-
+    */
 
 
 
@@ -102,6 +105,8 @@
     body {
         background-image: url("https://cdn.wallpapersafari.com/93/62/uaP5XA.jpg");
         text-align: center;
+        padding-left: 80px;
+        padding-right: 80px;
     }
 
     img {
